@@ -1,4 +1,4 @@
-class Squad
+ class Squad
   attr_reader :id
   attr_accessor :name, :mascot
   
@@ -9,7 +9,7 @@ class Squad
     @existing = existing
   end
 
-  def existing?
+  def existing? # essentially a getter 
     @existing
   end
 
@@ -18,23 +18,23 @@ class Squad
     @conn = connection
   end
 
-  def self.conn
+  def self.conn # class method 
     @conn
   end
 
-  # should return a list of squads
+  # should return a list of squads - class method 
   def self.all
     @conn.exec("SELECT * FROM squads")
   end
 
   # should return a squad by id
-  # or nil if not found
+  # or nil if not found - grabbing fields from the database and then creating new instance of class
   def self.find id
-    new @conn.exec('SELECT * FROM squads WHERE id = ($1)', [ id ] )[0], true
+    new @conn.exec('SELECT * FROM squads WHERE id = ($1)', [id])[0], true #what's the new?
   end
 
   def students
-    Squad.conn.exec("SELECT * FROM students WHERE squad_id = ($1)", [id])
+    Squad.conn.exec("SELECT * FROM students WHERE squad_id = ($1)", [@id])
   end
 
   def save
